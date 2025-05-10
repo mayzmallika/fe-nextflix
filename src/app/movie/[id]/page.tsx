@@ -1,38 +1,60 @@
-import Image from 'next/image'
+'use client'
 import Navbar from '@/components/Navbar'
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { use } from 'react'
 import { MovieDetailType } from '@/features/movies/types'
-import { notFound } from 'next/navigation'
-
-type MovieDetailProps = {
-  params: {
+interface MovieDetailProps {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-async function getMovie(id: string): Promise<MovieDetailType | null> {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies/${id}`, {
-      cache: 'no-store',
-    })
+const MovieDetail = ({ params }: MovieDetailProps) => {
+  // Use React.use() to unwrap the params from the promise
+  const { id } = use(params)
 
-    if (!res.ok) return null
-    const jsonResponse = await res.json()
-    console.log(jsonResponse)
-    return jsonResponse.data
-  } catch {
-    return null
+  const [movie, setMovie] = useState<MovieDetailType | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!id) return // Return early if id is undefined
+
+    const fetchMovieDetail = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies/${id}`)
+        if (!res.ok) {
+          throw new Error('Failed to fetch movie details')
+        }
+        const data = await res.json()
+        setMovie(data.data)
+      } catch (error) {
+        setError('Failed to load movie details')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchMovieDetail()
+  }, [id]) // Fetch data when id changes
+
+  if (loading) {
+    return <div>Loading...</div>
   }
-}
 
-export default async function MovieDetail({ params }: MovieDetailProps)  {
-  const movie = await getMovie(params.id)
-  if (!movie) return notFound()
+  if (error) {
+    return <div>{error}</div>
+  }
+
+  if (!movie) {
+    return <div>Movie not found</div>
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="relative h-[70vh] w-full overflow-hidden">
         <Navbar />
-
         <Image
           src={movie.poster}
           alt={movie.title}
@@ -40,6 +62,7 @@ export default async function MovieDetail({ params }: MovieDetailProps)  {
           objectFit="cover"
           className="opacity-30"
         />
+
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30"></div>
         <div className="absolute bottom-5 left-10 z-10 max-w-2xl">
           <h1 className="text-5xl font-bold mb-4">{movie.title}</h1>
@@ -107,3 +130,5 @@ export default async function MovieDetail({ params }: MovieDetailProps)  {
     </div>
   )
 }
+
+export default MovieDetail
