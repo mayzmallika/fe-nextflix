@@ -21,7 +21,7 @@ const MovieDetail = ({ params }: MovieDetailProps) => {
     return <ErrorComponent message={error} />
   }
 
-  if (!movie) {
+  if (!movie?.title) {
     return <ErrorComponent message="Movie not found" />
   }
 
