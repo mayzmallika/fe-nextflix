@@ -7,7 +7,7 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   return (
-    <nav className="flex justify-between items-center px-6 py-4 bg-gradient-to-b from-black/70 to-transparent absolute top-0 w-full z-10">
+    <nav className="flex justify-between items-center px-6 md:px-10 py-4 bg-gradient-to-b from-black/70 to-transparent absolute top-0 w-full z-10">
       <div className="flex items-center space-x-6">
         <Link href="/">
         <img

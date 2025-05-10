@@ -1,12 +1,12 @@
 export default function HeroBanner() {
   return (
-    <section className="relative h-[70vh] text-white">
+    <section className="relative md:static h-[70vh] text-white">
       <img
         src="/assets/images/hero.jpg"
         alt="Devil in Ohio"
         className="absolute inset-0 object-cover object-center w-full h-full"
       />
-      <div className="absolute z-10 px-6 md:px-10 max-w-xl bottom-10 md:bottom-auto md:top-1/3">
+      <div className="absolute z-10 px-6 md:px-10 max-w-xl bottom-10 md:bottom-auto md:top-1/3 lg:top-1/5">
         <img
           src="/assets/images/n-series.png"
           alt="Netflix"
@@ -17,6 +17,15 @@ export default function HeroBanner() {
           alt="Netflix"
           className="mx-auto md:mx-0"
         />
+
+        <h1 className="flex text-2xl font-bold mt-4">
+          <img
+            src="/assets/images/top-ten.png"
+            alt="Top 10"
+            className="w-10 pr-2"
+          />{' '}
+          #1 in TV Shows Today
+        </h1>
 
         <p className="mt-4 text-sm max-w-md mx-auto md:mx-0 hidden md:block">
           Determined to protect a young patient who escaped a mysterious cult, a
