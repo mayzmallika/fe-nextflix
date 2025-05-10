@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { use } from 'react'
 import { MovieDetailType } from '@/features/movies/types'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import ErrorComponent from '@/components/ErrorComponent'
 interface MovieDetailProps {
   params: Promise<{
     id: string
@@ -40,11 +42,11 @@ const MovieDetail = ({ params }: MovieDetailProps) => {
   }, [id]) // Fetch data when id changes
 
   if (loading) {
-    return <div>Loading...</div>
+    return <LoadingSpinner />
   }
 
   if (error) {
-    return <div>{error}</div>
+    return <ErrorComponent message={error} />
   }
 
   if (!movie) {
