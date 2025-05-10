@@ -1,4 +1,5 @@
 export interface Movie {
+  id: string
   title: string
   imdbID: string
   year: string
@@ -6,6 +7,7 @@ export interface Movie {
 }
 
 export interface MovieDetailType {
+  id: string
   title: string
   year: string
   rated: string
@@ -28,4 +30,14 @@ export interface MovieDetailType {
   type: string
   totalSeasons: string
   response: string
+}
+export interface PopularSwiperProps {
+  title: string
+  movies: Movie[]
+}
+
+export interface MovieDetailProps {
+  params: Promise<{
+    id: string
+  }>
 }

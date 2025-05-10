@@ -1,54 +1,28 @@
 'use client'
 import Navbar from '@/components/Navbar'
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { use } from 'react'
-import { MovieDetailType } from '@/features/movies/types'
-interface MovieDetailProps {
-  params: Promise<{
-    id: string
-  }>
-}
+import { MovieDetailProps } from '@/features/movies/types'
+import Image from 'next/image'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import ErrorComponent from '@/components/ErrorComponent'
+import { useMovieDetail } from '@/features/movies/hooks/useMovieService'
 
 const MovieDetail = ({ params }: MovieDetailProps) => {
   // Use React.use() to unwrap the params from the promise
   const { id } = use(params)
 
-  const [movie, setMovie] = useState<MovieDetailType | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!id) return // Return early if id is undefined
-
-    const fetchMovieDetail = async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies/${id}`)
-        if (!res.ok) {
-          throw new Error('Failed to fetch movie details')
-        }
-        const data = await res.json()
-        setMovie(data.data)
-      } catch (error) {
-        setError('Failed to load movie details')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchMovieDetail()
-  }, [id]) // Fetch data when id changes
+  const { movie, loading, error, setMovie, setError, setLoading } = useMovieDetail({ id })
 
   if (loading) {
-    return <div>Loading...</div>
+    return <LoadingSpinner />
   }
 
   if (error) {
-    return <div>{error}</div>
+    return <ErrorComponent message={error} />
   }
 
-  if (!movie) {
-    return <div>Movie not found</div>
+  if (!movie?.title) {
+    return <ErrorComponent message="Movie not found" />
   }
 
   return (
@@ -69,8 +43,6 @@ const MovieDetail = ({ params }: MovieDetailProps) => {
           <p className="text-sm text-gray-300 mb-2">
             {movie.year} • {movie.rated} • {movie.runtime}
           </p>
-          {/* <p className="text-lg mb-4 max-w-xl line-clamp-4 md:line-clamp-5 lg:line-clamp-6"> */}
-
           <p className="text-lg mb-4 mx-2 line-clamp-4 md:line-clamp-5 lg:line-clamp-6">
             {' '}
             {movie.plot}

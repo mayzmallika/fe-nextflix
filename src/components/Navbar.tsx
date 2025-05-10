@@ -7,23 +7,25 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   return (
-    <nav className="flex justify-between items-center px-6 py-4 bg-gradient-to-b from-black/70 to-transparent absolute top-0 w-full z-10">
+    <nav className="flex justify-between items-center px-6 md:px-10 py-4 bg-gradient-to-b from-black/70 to-transparent absolute top-0 w-full z-10">
       <div className="flex items-center space-x-6">
         <Link href="/">
-        <img
-          src="/assets/images/logo.png"
-          alt="Netflix"
-          className="w-24 hidden md:block"
-        />
-        <img
-          src="/assets/images/n-logo.png"
-          alt="Netflix"
-          className="w-4 md:hidden"
-        />
+          <img
+            src="/assets/images/logo.png"
+            alt="Netflix"
+            className="w-24 hidden md:block"
+          />
+          <img
+            src="/assets/images/n-logo.png"
+            alt="Netflix"
+            className="w-4 md:hidden"
+          />
         </Link>
 
         <ul className="hidden md:flex space-x-4 text-white text-sm">
-          <li className="hover:underline cursor-pointer">Home</li>
+          <Link href="/" >
+            <li className="hover:underline cursor-pointer">Home</li>
+          </Link>
           <li>TV Shows</li>
           <li>Movies</li>
           <li>New & Popular</li>
@@ -62,9 +64,11 @@ export default function Navbar() {
         </div>
       </div>
       <div className="flex items-center space-x-4 text-white">
-        <button className="hidden md:block">
-          <img src="/assets/images/search.png" alt="Netflix" className="w-6" />
-        </button>
+        <Link href="/movie/search">
+          <button className="hidden md:block">
+            <img src="/assets/images/search.png" alt="Netflix" className="w-6" />
+          </button>
+        </Link>
         <button className="hidden md:block">Kids</button>
         <button className="hidden md:block">
           <img src="/assets/images/bell.png" alt="Netflix" className="w-6" />
