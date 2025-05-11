@@ -4,7 +4,7 @@ import Link from 'next/link';
 export function MovieCard({ movie }: { movie: Movie }) {
   return (
     <div className="mt-2 rounded shadow-md text-white">
-      <Link href={`/movie/${movie.imdbID}`}>
+      <Link href={`/movie/${movie.id}`}>
         <img
           src={movie.poster}
           alt={movie.title}
